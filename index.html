@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MONACO CFW | سيرفر الرول بلاي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script>
+const DISCORD_CLIENT_ID    = '1498437523100270724';
+const DISCORD_REDIRECT_URI = 'https://saawith2.github.io/MONACO-WEB/cfwsite/';
+const ADMIN_IDS = ['1433068059094155375','1266569651664457738','1286766140957134859'];
+const firebaseConfig = {
+  apiKey:"AIzaSyAGddF4CRhrQ1rW2LXwY6FyHww6iHdqyYg",
+  authDomain:"monaco1-58d60.firebaseapp.com",
+  databaseURL:"https://monaco1-58d60-default-rtdb.firebaseio.com",
+  projectId:"monaco1-58d60",
+  storageBucket:"monaco1-58d60.firebasestorage.app",
+  messagingSenderId:"117043233568",
+  appId:"1:117043233568:web:97d17d887270d724d38d45"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+</script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--ff:'Cairo',sans-serif;--fb:'Rajdhani',sans-serif;--tr:.25s ease}
+body.dark{
+  --bg:#0c1018;--bg2:#131a26;--bg3:#1a2336;--bgh:#202c40;
+  --bd:rgba(120,140,180,.14);--bd2:rgba(120,140,180,.26);--bd3:rgba(168,185,215,.5);
+  --t1:#e8edf5;--t2:#9aaabf;--t3:#5a6a80;
+  --sl:#b8c8dc;--sl2:#dce8f5;
+  --gold:#c9a84c;--gold2:#e8c97a;
+  --green:#4ade80;--red:#f87171;--blue:#60a5fa;--orange:#fb923c;
+  --tag:rgba(168,185,215,.07);--nav:rgba(12,16,24,.97);
+  --shadow:0 8px 32px rgba(0,0,0,.5);
+  --disc:#5865f2;--disc2:#4752c4;
+  --admbg:rgba(201,168,76,.1);--admbd:rgba(201,168,76,.25);
+}
+body.light{
+  --bg:#eef0f5;--bg2:#f4f6fa;--bg3:#fff;--bgh:#e4e7ef;
+  --bd:rgba(100,120,160,.16);--bd2:rgba(100,120,160,.28);--bd3:rgba(60,80,130,.5);
+  --t1:#141c2e;--t2:#3d4f6a;--t3:#7a8da8;
+  --sl:#4a5a75;--sl2:#1a2a45;
+  --gold:#a07828;--gold2:#c49940;
+  --green:#16a34a;--red:#dc2626;--blue:#2563eb;--orange:#ea580c;
+  --tag:rgba(60,80,130,.06);--nav:rgba(238,240,245,.97);
+  --shadow:0 4px 24px rgba(100,120,160,.13);
+  --disc:#5865f2;--disc2:#4752c4;
+  --admbg:rgba(160,120,40,.07);--admbd:rgba(160,120,40,.2);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:3px}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:300;background:var(--nav);backdrop-filter:blur(22px);border-bottom:1px solid var(--bd);display:flex;align-items:center;min-height:62px;padding:0 clamp(.75rem,3vw,2rem);gap:.5rem;flex-wrap:wrap}
+.logo{font-family:var(--fb);font-size:1.3rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;background:linear-gradient(135deg,var(--sl),var(--sl2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0}
+.nav-mid{display:flex;gap:.15rem;flex:1;justify-content:center;overflow-x:auto;scrollbar-width:none;min-width:0}
+.nav-mid::-webkit-scrollbar{display:none}
+.tb{padding:6px 13px;border-radius:8px;font-size:.85rem;font-weight:600;color:var(--t2);cursor:pointer;background:none;border:1px solid transparent;font-family:var(--ff);transition:all var(--tr);white-space:nowrap;flex-shrink:0}
+.tb:hover{color:var(--t1);background:var(--bgh)}
+.tb.active{color:var(--t1);background:var(--bg3);border-color:var(--bd2)}
+.tb.adm{color:var(--gold)}
+.tb.adm.active{background:var(--admbg);border-color:var(--admbd)}
+.nav-r{display:flex;align-items:center;gap:.4rem;flex-shrink:0;margin-inline-start:auto}
+.ib{width:34px;height:34px;border-radius:8px;background:var(--tag);border:1px solid var(--bd);color:var(--t2);cursor:pointer;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all var(--tr);font-family:var(--ff)}
+.ib:hover{background:var(--bgh);color:var(--t1);border-color:var(--bd2)}
+.btn-d{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;background:var(--disc);border:none;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:var(--ff);transition:background var(--tr),transform var(--tr);white-space:nowrap}
+.btn-d:hover{background:var(--disc2);transform:translateY(-1px)}
+.btn-d svg{width:15px;height:15px;flex-shrink:0}
+.upill{display:flex;align-items:center;gap:6px;padding:3px 10px 3px 3px;background:var(--bg3);border:1px solid var(--bd2);border-radius:20px}
+.upill img{width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.uname{font-size:.78rem;font-weight:700;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px}
+.uout{background:none;border:none;color:var(--t3);cursor:pointer;font-size:.75rem;padding:0 2px;transition:color var(--tr);font-family:var(--ff)}
+.uout:hover{color:var(--red)}
+@media(max-width:640px){
+  nav{padding:.5rem .75rem;gap:.3rem}
+  .nav-mid{order:3;width:100%;border-top:1px solid var(--bd);padding-top:.35rem;justify-content:flex-start}
+  .tb{padding:5px 10px;font-size:.78rem}
+  .logo{font-size:1.1rem}
+}
+
+/* PAGES */
+.page{display:none;animation:fi .28s ease}
+.page.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* LAYOUT */
+.wrap{max-width:1000px;margin:0 auto;padding:4rem clamp(1rem,4vw,2rem)}
+.sh{text-align:center;margin-bottom:2.5rem}
+.se{font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:.5rem}
+.st{font-family:var(--fb);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t1)}
+
+/* HERO */
+.hero{min-height:calc(100vh - 62px);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:4rem clamp(1rem,5vw,3rem);text-align:center}
+.hbg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 55% at 50% 35%,var(--bg3) 0%,transparent 65%),radial-gradient(ellipse 40% 30% at 15% 75%,var(--bg2) 0%,transparent 55%),radial-gradient(ellipse 40% 30% at 85% 75%,var(--bg2) 0%,transparent 55%)}
+.hgrid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);background-size:55px 55px;opacity:.45;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent 70%)}
+.hc{position:relative;z-index:2;max-width:700px}
+.hpill{display:inline-flex;align-items:center;gap:8px;background:var(--tag);border:1px solid var(--bd2);color:var(--t2);padding:5px 16px 5px 8px;border-radius:20px;font-size:.78rem;font-weight:600;margin-bottom:1.75rem}
+.pdot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+h1{font-family:var(--fb);font-size:clamp(2.5rem,8vw,5.5rem);font-weight:700;letter-spacing:6px;text-transform:uppercase;line-height:.95;margin-bottom:.4rem;background:linear-gradient(175deg,var(--sl2) 0%,var(--sl) 55%,var(--t3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.h1sub{font-family:var(--fb);font-size:clamp(1rem,3vw,1.6rem);font-weight:600;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:1.5rem}
+.hsub{font-size:clamp(.93rem,2vw,1.05rem);color:var(--t2);line-height:1.85;max-width:520px;margin:0 auto 2.5rem}
+.hbtns{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap}
+.bp{padding:12px 28px;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;border:none;font-family:var(--ff);background:linear-gradient(135deg,var(--sl),var(--sl2));color:var(--bg);transition:all var(--tr)}
+body.light .bp{background:linear-gradient(135deg,#2a3a58,#4a5a7a);color:#fff}
+.bp:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(168,185,215,.25)}
+.bg2{padding:12px 28px;border-radius:10px;font-size:.92rem;font-weight:600;cursor:pointer;font-family:var(--ff);background:transparent;border:1px solid var(--bd2);color:var(--t2);transition:all var(--tr)}
+.bg2:hover{border-color:var(--bd3);color:var(--t1);background:var(--bgh)}
+.hstats{display:flex;justify-content:center;gap:clamp(1.5rem,5vw,4rem);margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--bd)}
+.sv{font-family:var(--fb);font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;color:var(--t1)}
+.slbl{font-size:.74rem;color:var(--t3);letter-spacing:1px;margin-top:3px}
+
+/* RULES */
+.rules-wrap{display:flex;flex-direction:column;gap:1rem}
+.rule-section{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.rule-section-head{padding:1rem 1.5rem;display:flex;align-items:center;gap:.75rem;border-bottom:1px solid var(--bd);cursor:pointer;transition:background var(--tr);user-select:none}
+.rule-section-head:hover{background:var(--bgh)}
+.rule-num{font-family:var(--fb);font-size:1.5rem;font-weight:700;color:var(--bd2);flex-shrink:0;min-width:36px}
+.rule-section-ico{font-size:1.3rem;flex-shrink:0}
+.rule-section-title{font-size:1rem;font-weight:700;color:var(--t1);flex:1}
+.rule-chevron{color:var(--t3);font-size:.8rem;transition:transform .3s;flex-shrink:0}
+.rule-section.open .rule-chevron{transform:rotate(180deg)}
+.rule-body{display:none;padding:1.25rem 1.5rem;flex-direction:column;gap:.7rem}
+.rule-section.open .rule-body{display:flex}
+.rule-item{display:flex;gap:.75rem;align-items:flex-start;padding:.75rem 1rem;background:var(--tag);border-radius:10px;border:1px solid var(--bd)}
+.rule-item-num{font-family:var(--fb);font-size:.85rem;font-weight:700;color:var(--t3);flex-shrink:0;min-width:24px;padding-top:1px}
+.rule-item-text{font-size:.87rem;color:var(--t2);line-height:1.7}
+.rule-item-text strong{color:var(--t1)}
+.rule-item.danger{border-color:rgba(248,113,113,.2);background:rgba(248,113,113,.05)}
+.rule-item.danger .rule-item-num{color:var(--red)}
+.rule-item.warn{border-color:rgba(251,146,60,.2);background:rgba(251,146,60,.05)}
+.rule-item.warn .rule-item-num{color:var(--orange)}
+.rule-item.ok{border-color:rgba(74,222,128,.2);background:rgba(74,222,128,.05)}
+.rule-item.ok .rule-item-num{color:var(--green)}
+
+/* ACTIVATION QUESTIONS */
+.qa-status{text-align:center;padding:2rem;background:var(--bg2);border:1px solid var(--bd);border-radius:16px;margin-bottom:2rem}
+.qa-status-ico{font-size:2.5rem;margin-bottom:.75rem}
+.qa-status h3{font-size:1rem;font-weight:700;color:var(--t1);margin-bottom:.35rem}
+.qa-status p{font-size:.83rem;color:var(--t2)}
+.qa-form{display:flex;flex-direction:column;gap:1.25rem}
+.qa-card{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:1.25rem 1.5rem;transition:border-color var(--tr)}
+.qa-card:focus-within{border-color:var(--bd2)}
+.qa-num{font-size:.7rem;font-weight:700;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem}
+.qa-q{font-size:.94rem;font-weight:700;color:var(--t1);margin-bottom:.75rem;line-height:1.6}
+.qa-inp,.qa-ta{width:100%;padding:10px 13px;background:var(--bg);border:1.5px solid var(--bd);border-radius:10px;color:var(--t1);font-size:.88rem;font-family:var(--ff);outline:none;transition:border-color var(--tr)}
+.qa-inp::placeholder,.qa-ta::placeholder{color:var(--t3)}
+.qa-inp:focus,.qa-ta:focus{border-color:var(--bd3)}
+.qa-ta{resize:vertical;min-height:80px;line-height:1.6}
+.qa-required{display:inline-block;font-size:.65rem;font-weight:700;color:var(--red);background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);padding:1px 7px;border-radius:8px;margin-inline-start:6px;vertical-align:middle}
+.qa-submit{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--sl),var(--sl2));color:var(--bg);border:none;font-size:.95rem;font-weight:700;cursor:pointer;font-family:var(--ff);transition:all var(--tr);margin-top:.5rem}
+body.light .qa-submit{background:linear-gradient(135deg,#2a3a58,#4a5a7a);color:#fff}
+.qa-submit:hover{transform:translateY(-1px);opacity:.92}
+.qa-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* SENT STATE */
+.sent-box{text-align:center;padding:3rem 2rem;background:var(--bg2);border:1px solid rgba(74,222,128,.25);border-radius:16px}
+.sent-ico{font-size:3rem;margin-bottom:1rem}
+.sent-box h2{font-size:1.15rem;font-weight:800;color:var(--t1);margin-bottom:.5rem}
+.sent-box p{font-size:.85rem;color:var(--t2);line-height:1.7}
+
+/* ADMIN */
+.admhdr{background:var(--admbg);border:1px solid var(--admbd);border-radius:14px;padding:1.25rem 1.75rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.admrow{display:flex;align-items:center;gap:.75rem}
+.admttl{font-family:var(--fb);font-size:1.4rem;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+.admsub{font-size:.8rem;color:var(--t3);margin-top:2px}
+.rdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;margin-inline-end:5px}
+.rfbtn{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;background:var(--tag);border:1px solid var(--bd2);color:var(--t2);font-size:.82rem;font-weight:700;cursor:pointer;font-family:var(--ff);transition:all var(--tr)}
+.rfbtn:hover{background:var(--bgh);color:var(--t1)}
+.spin{animation:sp .8s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+.sgrid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1rem;margin-bottom:2rem}
+.scard{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden;transition:border-color var(--tr),transform var(--tr)}
+.scard:hover{border-color:var(--bd2);transform:translateY(-2px)}
+.scard::before{content:'';position:absolute;top:-20px;inset-inline-end:-20px;width:80px;height:80px;border-radius:50%;opacity:.06}
+.scard.vi::before{background:var(--blue)}.scard.li::before{background:var(--green)}.scard.lo::before{background:var(--orange)}.scard.ac::before{background:var(--red)}
+.scico{font-size:1.4rem;margin-bottom:.75rem}
+.sclbl{font-size:.75rem;color:var(--t3);font-weight:600;letter-spacing:.5px;margin-bottom:.4rem}
+.scnum{font-family:var(--fb);font-size:2.2rem;font-weight:700;line-height:1}
+.scnum.vc{color:var(--blue)}.scnum.lc{color:var(--green)}.scnum.oc{color:var(--orange)}.scnum.rc{color:var(--red)}
+.scnote{font-size:.72rem;color:var(--t3);margin-top:.35rem}
+.rbox{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.rhead{padding:1rem 1.5rem;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.rttl{font-size:.93rem;font-weight:700;color:var(--t1)}
+.rbadge{font-size:.7rem;padding:3px 10px;border-radius:12px;background:var(--tag);color:var(--t3);border:1px solid var(--bd)}
+.rlist{max-height:500px;overflow-y:auto}
+.aitem{background:var(--bg2);border-bottom:1px solid var(--bd);padding:1.25rem 1.5rem;transition:background var(--tr)}
+.aitem:last-child{border-bottom:none}
+.aitem:hover{background:var(--bgh)}
+.aitem-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem}
+.aav{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--bd);flex-shrink:0}
+.aavp{width:36px;height:36px;border-radius:50%;background:var(--tag);border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;color:var(--t3);flex-shrink:0}
+.aname{font-size:.88rem;font-weight:700;color:var(--t1)}
+.atime{font-size:.72rem;color:var(--t3)}
+.auid{font-size:.7rem;color:var(--t3)}
+.abadge-p{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:12px;background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.25);margin-inline-start:auto}
+.abadge-a{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:12px;background:rgba(74,222,128,.1);color:var(--green);border:1px solid rgba(74,222,128,.2);margin-inline-start:auto}
+.abadge-r{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:12px;background:rgba(248,113,113,.1);color:var(--red);border:1px solid rgba(248,113,113,.2);margin-inline-start:auto}
+.qa-answers{display:flex;flex-direction:column;gap:.5rem}
+.qa-ans-row{display:flex;gap:.5rem;font-size:.82rem}
+.qa-ans-q{color:var(--t3);font-weight:600;flex-shrink:0;min-width:120px}
+.qa-ans-a{color:var(--t2);line-height:1.5}
+.adm-actions{display:flex;gap:.5rem;margin-top:.85rem;flex-wrap:wrap}
+.adm-btn{padding:6px 14px;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:var(--ff);border:1px solid var(--bd);background:var(--tag);color:var(--t2);transition:all var(--tr)}
+.adm-btn:hover{background:var(--bgh);color:var(--t1)}
+.adm-btn.accept{border-color:rgba(74,222,128,.3);color:var(--green);background:rgba(74,222,128,.08)}
+.adm-btn.accept:hover{background:rgba(74,222,128,.15)}
+.adm-btn.reject{border-color:rgba(248,113,113,.3);color:var(--red);background:rgba(248,113,113,.08)}
+.adm-btn.reject:hover{background:rgba(248,113,113,.15)}
+.empty{text-align:center;padding:3rem;color:var(--t3);font-size:.88rem}
+
+/* AUTH OVERLAY */
+.ov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s}
+.ov.show{opacity:1;pointer-events:all}
+.modal{background:var(--bg3);border:1px solid var(--bd2);border-radius:24px;padding:2.5rem;max-width:390px;width:100%;text-align:center;transform:translateY(16px);transition:transform .3s;position:relative}
+.ov.show .modal{transform:translateY(0)}
+.mclose{position:absolute;top:1rem;inset-inline-end:1rem;background:none;border:none;color:var(--t3);cursor:pointer;font-size:1rem;padding:4px;transition:color var(--tr)}
+.mclose:hover{color:var(--t2)}
+.dbox{width:62px;height:62px;border-radius:16px;background:var(--disc);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem}
+.dbox svg{width:34px;height:34px}
+.modal h2{font-size:1.15rem;font-weight:700;color:var(--t1);margin-bottom:.45rem}
+.modal p{font-size:.83rem;color:var(--t2);margin-bottom:1.6rem;line-height:1.7}
+.mnote{font-size:.7rem;color:var(--t3);margin-top:.9rem;margin-bottom:0}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;inset-inline-end:1.5rem;background:var(--bg3);border:1px solid var(--bd2);border-radius:12px;padding:11px 18px;font-size:.87rem;color:var(--t1);font-weight:600;box-shadow:var(--shadow);z-index:999;transform:translateY(60px);opacity:0;transition:all .35s;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* FOOTER */
+footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp(1rem,4vw,2rem);text-align:center}
+.flogo{font-family:var(--fb);font-size:1.1rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin-bottom:.9rem}
+.flinks{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.flinks a{font-size:.79rem;color:var(--t3);text-decoration:none;cursor:pointer;transition:color var(--tr)}
+.flinks a:hover{color:var(--t2)}
+.fcopy{font-size:.73rem;color:var(--t3)}
+</style>
+</head>
+<body class="dark" dir="rtl">
+
+<!-- AUTH OVERLAY -->
+<div class="ov" id="ov">
+  <div class="modal">
+    <button class="mclose" onclick="closeOv()">✕</button>
+    <div class="dbox"><svg viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg></div>
+    <h2>تسجيل الدخول بديسكورد</h2>
+    <p>سجّل دخولك لتتمكن من تقديم طلب التفعيل والانضمام لسيرفر MONACO CFW</p>
+    <button class="btn-d" style="width:100%;justify-content:center;padding:12px 20px;font-size:.95rem" onclick="loginDiscord()">
+      <svg viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      تسجيل الدخول
+    </button>
+    <p class="mnote">نستخدم فقط اسمك وصورتك من ديسكورد.</p>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <span class="logo" onclick="goTab('home')">MONACO CFW</span>
+  <div class="nav-mid">
+    <button class="tb active" data-tab="home"    onclick="goTab('home')">🏠 الرئيسية</button>
+    <button class="tb"        data-tab="rules"   onclick="goTab('rules')">📜 القوانين</button>
+    <button class="tb"        data-tab="apply"   onclick="goTab('apply')">🎮 طلب التفعيل</button>
+    <button class="tb"        data-tab="contact" onclick="goTab('contact')">📞 تواصل</button>
+    <button class="tb adm"    data-tab="admin"   onclick="goTab('admin')" id="adm-tab" style="display:none">⚙️ الإدارة</button>
+  </div>
+  <div class="nav-r">
+    <button class="ib" id="theme-btn" onclick="toggleTheme()">🌙</button>
+    <div id="auth-area">
+      <button class="btn-d" onclick="openOv()">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        دخول
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="tab-home">
+  <div class="hero">
+    <div class="hbg"></div><div class="hgrid"></div>
+    <div class="hc">
+      <div class="hpill"><div class="pdot"></div>سيرفر الرول بلاي الأول</div>
+      <h1>MONACO</h1>
+      <div class="h1sub">CFW ROLEPLAY</div>
+      <p class="hsub">عالم رول بلاي متكامل يضم أقوى تجربة CFW عربية — قصص حقيقية، شخصيات ثرية، ومجتمع محترف يستقبلك</p>
+      <div class="hbtns">
+        <button class="bp" onclick="goTab('apply')">🎮 قدّم طلب التفعيل</button>
+        <button class="bg2" onclick="goTab('rules')">📜 اقرأ القوانين</button>
+      </div>
+      <div class="hstats">
+        <div><div class="sv">500+</div><div class="slbl">لاعب نشط</div></div>
+        <div><div class="sv">24/7</div><div class="slbl">سيرفر مفتوح</div></div>
+        <div><div class="sv">CFW</div><div class="slbl">إطار عمل مخصص</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RULES -->
+<div class="page" id="tab-rules">
+  <div class="wrap">
+    <div class="sh"><div class="se">يجب القراءة قبل التقديم</div><div class="st">قوانين السيرفر</div></div>
+    <div class="rules-wrap">
+
+      <!-- القواعد العامة -->
+      <div class="rule-section open">
+        <div class="rule-section-head" onclick="toggleSection(this)">
+          <span class="rule-num">01</span>
+          <span class="rule-section-ico">⚖️</span>
+          <span class="rule-section-title">القواعد العامة</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-body">
+          <div class="rule-item ok"><span class="rule-item-num">1.1</span><div class="rule-item-text">الاحترام واجب بين جميع اللاعبين داخل وخارج الرول — أي إهانة أو تنمر يُعرّض صاحبه للطرد الفوري.</div></div>
+          <div class="rule-item"><span class="rule-item-num">1.2</span><div class="rule-item-text">يُمنع الكلام خارج الشخصية <strong>(OOC)</strong> داخل المناطق الرسمية إلا عند الضرورة القصوى.</div></div>
+          <div class="rule-item"><span class="rule-item-num">1.3</span><div class="rule-item-text">الالتزام بالميكروفون الجيد — الصوت المشوش أو المقطوع يؤثر على تجربة الجميع.</div></div>
+          <div class="rule-item warn"><span class="rule-item-num">1.4</span><div class="rule-item-text">يُمنع منعاً باتاً الإفصاح عن هوية أي لاعب خارج السيرفر أو تسجيل المكالمات بدون إذن.</div></div>
+          <div class="rule-item"><span class="rule-item-num">1.5</span><div class="rule-item-text">التزم بالبقاء في الشخصية طوال جلسة اللعب — إذا كنت بحاجة لكسر الشخصية استخدم <strong>/ooc</strong>.</div></div>
+        </div>
+      </div>
+
+      <!-- قوانين الرول بلاي -->
+      <div class="rule-section">
+        <div class="rule-section-head" onclick="toggleSection(this)">
+          <span class="rule-num">02</span>
+          <span class="rule-section-ico">🎭</span>
+          <span class="rule-section-title">قوانين الرول بلاي</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-body">
+          <div class="rule-item danger"><span class="rule-item-num">2.1</span><div class="rule-item-text"><strong>No Powergaming:</strong> يُمنع فرض أفعال على اللاعبين بدون إعطائهم فرصة للرد أو المقاومة.</div></div>
+          <div class="rule-item danger"><span class="rule-item-num">2.2</span><div class="rule-item-text"><strong>No Metagaming:</strong> يُمنع استخدام معلومات خارج الرول (ديسكورد، واتساب) داخل اللعبة.</div></div>
+          <div class="rule-item danger"><span class="rule-item-num">2.3</span><div class="rule-item-text"><strong>Value Your Life (VDM/RDM):</strong> شخصيتك تقدّر حياتها — لا تقتل أو تدهس أحد بدون سبب رولي منطقي.</div></div>
+          <div class="rule-item warn"><span class="rule-item-num">2.4</span><div class="rule-item-text"><strong>New Life Rule:</strong> بعد الوفاة تنسى كل ما جرى في تلك الحادثة — لا تعود لنفس المكان أو تأخذ ثأرك.</div></div>
+          <div class="rule-item"><span class="rule-item-num">2.5</span><div class="rule-item-text">قبل أي حادثة عنف، يجب وجود تمهيد رولي كافٍ — لا اعتداء فجائي بدون مبرر.</div></div>
+          <div class="rule-item"><span class="rule-item-num">2.6</span><div class="rule-item-text">الرهائن يُعاملون باحترام — لا تعذيب أو إهانة مفرطة تخرج عن إطار القصة.</div></div>
+          <div class="rule-item warn"><span class="rule-item-num">2.7</span><div class="rule-item-text">ممنوع السرقة المباشرة من اللاعبين بدون تمهيد رولي — التحرش والنهب العشوائي مرفوض.</div></div>
+        </div>
+      </div>
+
+      <!-- قوانين المركبات -->
+      <div class="rule-section">
+        <div class="rule-section-head" onclick="toggleSection(this)">
+          <span class="rule-num">03</span>
+          <span class="rule-section-ico">🚗</span>
+          <span class="rule-section-title">قوانين المركبات والمطاردات</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-body">
+          <div class="rule-item danger"><span class="rule-item-num">3.1</span><div class="rule-item-text">يُمنع الـ <strong>VDM</strong> — استخدام السيارة كسلاح لدهس اللاعبين بدون مبرر رولي.</div></div>
+          <div class="rule-item"><span class="rule-item-num">3.2</span><div class="rule-item-text">في المطاردات مع الشرطة التزم بالرول — لا تستخدم مناطق الـ safezone أو المناطق المحمية للهروب.</div></div>
+          <div class="rule-item warn"><span class="rule-item-num">3.3</span><div class="rule-item-text">ممنوع الوقوف في منتصف الطريق أو إعاقة حركة المرور بشكل مقصود لإزعاج اللاعبين.</div></div>
+          <div class="rule-item"><span class="rule-item-num">3.4</span><div class="rule-item-text">التزم بقوانين المرور في المناطق الحضرية — القيادة الجنونية داخل المدينة بدون سبب رولي مخالفة.</div></div>
+          <div class="rule-item"><span class="rule-item-num">3.5</span><div class="rule-item-text">ممنوع سرقة مركبات الطوارئ (شرطة، إسعاف، إطفاء) إلا في سياق رولي مدروس ومسموح به.</div></div>
+        </div>
+      </div>
+
+      <!-- قوانين العصابات -->
+      <div class="rule-section">
+        <div class="rule-section-head" onclick="toggleSection(this)">
+          <span class="rule-num">04</span>
+          <span class="rule-section-ico">🔫</span>
+          <span class="rule-section-title">قوانين العصابات والجريمة</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-body">
+          <div class="rule-item"><span class="rule-item-num">4.1</span><div class="rule-item-text">يجب الحصول على موافقة الإدارة لتأسيس عصابة رسمية — الجماعات غير المرخصة لن تحظى بحماية القوانين.</div></div>
+          <div class="rule-item warn"><span class="rule-item-num">4.2</span><div class="rule-item-text">الحروب بين العصابات تحتاج تمهيد رولي لا يقل عن 24 ساعة — لا حروب فجائية بدون إشعار الإدارة.</div></div>
+          <div class="rule-item danger"><span class="rule-item-num">4.3</span><div class="rule-item-text">يُمنع الهجوم على المستشفيات والكنائس وأماكن التفاعل الرولي المحمية — هذه مناطق آمنة.</div></div>
+          <div class="rule-item"><span class="rule-item-num">4.4</span><div class="rule-item-text">أقصى عدد لأعضاء عصابة في عملية واحدة هو <strong>6 أشخاص</strong> — ما فوق ذلك يحتاج موافقة خاصة.</div></div>
+          <div class="rule-item warn"><span class="rule-item-num">4.5</span><div class="rule-item-text">تجارة الأسلحة والمخدرات في الرول تتم عبر مسارات محددة — لا بيع وشراء عشوائي خارج إطار القصة.</div></div>
+        </div>
+      </div>
+
+      <!-- قوانين الشرطة والطوارئ -->
+      <div class="rule-section">
+        <div class="rule-section-head" onclick="toggleSection(this)">
+          <span class="rule-num">05</span>
+          <span class="rule-section-ico">🚔</span>
+          <span class="rule-section-title">قوانين الشرطة والطوارئ</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-body">
+          <div class="rule-item ok"><span class="rule-item-num">5.1</span><div class="rule-item-text">ضباط الشرطة يلتزمون بقوانين الواقعية — لا تطاردات هوليودية أو تصرفات خارجة عن المنطق الرولي.</div></div>
+          <div class="rule-item"><span class="rule-item-num">5.2</span><div class="rule-item-text">إسعاف الطوارئ محمي في الرول — لا يُستهدف أفراد الإسعاف إلا في سياق رولي استثنائي معتمد.</div></div>
+          <div class="rule-item warn"><span class="rule-item-num">5.3</span><div class="rule-item-text">التعاون مع الشرطة في الرول إلزامي عند التوقيف — المقاومة مسموحة ضمن إطار منطقي لا فوضوي.</div></div>
+          <div class="rule-item"><span class="rule-item-num">5.4</span><div class="rule-item-text">الفساد في الشرطة مسموح به برواية رولية متكاملة ومعتمدة من الإدارة مسبقاً.</div></div>
+        </div>
+      </div>
+
+      <!-- العقوبات -->
+      <div class="rule-section">
+        <div class="rule-section-head" onclick="toggleSection(this)">
+          <span class="rule-num">06</span>
+          <span class="rule-section-ico">🔨</span>
+          <span class="rule-section-title">جدول العقوبات</span>
+          <span class="rule-chevron">▼</span>
+        </div>
+        <div class="rule-body">
+          <div class="rule-item warn"><span class="rule-item-num">⚠️</span><div class="rule-item-text"><strong>تحذير أول:</strong> مخالفة بسيطة — تنبيه رسمي في السيرفر.</div></div>
+          <div class="rule-item warn"><span class="rule-item-num">⚠️⚠️</span><div class="rule-item-text"><strong>تحذير ثاني:</strong> إيقاف مؤقت من 24 ساعة إلى أسبوع حسب المخالفة.</div></div>
+          <div class="rule-item danger"><span class="rule-item-num">🚫</span><div class="rule-item-text"><strong>مخالفة جسيمة:</strong> حظر مؤقت من أسبوع إلى شهر مع مراجعة الحساب.</div></div>
+          <div class="rule-item danger"><span class="rule-item-num">❌</span><div class="rule-item-text"><strong>Metagaming / Cheating / RDM متعمد:</strong> حظر دائم فوري بدون تحذير مسبق.</div></div>
+          <div class="rule-item ok"><span class="rule-item-num">✅</span><div class="rule-item-text"><strong>الاعتراض على العقوبة:</strong> يحق لك رفع تذكرة اعتراض خلال 48 ساعة من صدور القرار.</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- APPLY -->
+<div class="page" id="tab-apply">
+  <div class="wrap">
+    <div class="sh"><div class="se">انضم لعالم الرول بلاي</div><div class="st">طلب التفعيل</div></div>
+
+    <!-- login wall -->
+    <div id="apply-wall" style="display:none">
+      <div class="qa-status">
+        <div class="qa-status-ico">🔐</div>
+        <h3>سجّل دخولك أولاً</h3>
+        <p>تحتاج لتسجيل الدخول بديسكورد لتتمكن من تقديم طلب التفعيل</p>
+        <button class="btn-d" style="margin:1rem auto 0;padding:11px 28px;font-size:.92rem" onclick="openOv()">
+          <svg viewBox="0 0 24 24" fill="white" width="15" height="15"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          تسجيل الدخول بديسكورد
+        </button>
+      </div>
+    </div>
+
+    <!-- already applied -->
+    <div id="apply-sent" style="display:none">
+      <div class="sent-box">
+        <div class="sent-ico">✅</div>
+        <h2>تم إرسال طلبك بنجاح!</h2>
+        <p>طلبك قيد المراجعة من قِبل الإدارة — سيتم الرد عليك في ديسكورد خلال 24 ساعة.<br><br>تأكد من تفعيل الإشعارات في السيرفر حتى لا تفوتك الموافقة.</p>
+      </div>
+    </div>
+
+    <!-- form -->
+    <div id="apply-form">
+      <div class="qa-form">
+        <div class="qa-card">
+          <div class="qa-num">السؤال 01</div>
+          <div class="qa-q">ما اسمك الكامل (داخل الرول)؟ <span class="qa-required">مطلوب</span></div>
+          <input class="qa-inp" id="q1" type="text" placeholder="مثال: أحمد بن خالد العمري">
+        </div>
+        <div class="qa-card">
+          <div class="qa-num">السؤال 02</div>
+          <div class="qa-q">كم عمرك الحقيقي؟ <span class="qa-required">مطلوب</span></div>
+          <input class="qa-inp" id="q2" type="number" placeholder="مثال: 20" min="14" max="99">
+        </div>
+        <div class="qa-card">
+          <div class="qa-num">السؤال 03</div>
+          <div class="qa-q">ما هو الـ Metagaming وكيف تتجنبه؟ <span class="qa-required">مطلوب</span></div>
+          <textarea class="qa-ta" id="q3" placeholder="اشرح بأسلوبك الخاص..."></textarea>
+        </div>
+        <div class="qa-card">
+          <div class="qa-num">السؤال 04</div>
+          <div class="qa-q">ماذا تعني قاعدة New Life Rule؟ <span class="qa-required">مطلوب</span></div>
+          <textarea class="qa-ta" id="q4" placeholder="اشرح بأسلوبك الخاص..."></textarea>
+        </div>
+        <div class="qa-card">
+          <div class="qa-num">السؤال 05</div>
+          <div class="qa-q">ما هي شخصيتك في الرول وما قصتها؟ <span class="qa-required">مطلوب</span></div>
+          <textarea class="qa-ta" id="q5" placeholder="قدّم شخصيتك، خلفيتها، أهدافها في الرول..." style="min-height:110px"></textarea>
+        </div>
+        <div class="qa-card">
+          <div class="qa-num">السؤال 06</div>
+          <div class="qa-q">هل لديك خبرة سابقة في الرول بلاي؟ وأين؟</div>
+          <textarea class="qa-ta" id="q6" placeholder="سيرفرات سابقة، أدوار لعبتها... أو اكتب 'لا خبرة' إذا كنت جديداً"></textarea>
+        </div>
+        <div class="qa-card">
+          <div class="qa-num">السؤال 07</div>
+          <div class="qa-q">اذكر قانونين من قوانين السيرفر وأهميتهما <span class="qa-required">مطلوب</span></div>
+          <textarea class="qa-ta" id="q7" placeholder="هذا يثبت أنك قرأت القوانين..."></textarea>
+        </div>
+        <div class="qa-card">
+          <div class="qa-num">السؤال 08</div>
+          <div class="qa-q">لماذا تريد الانضمام لـ MONACO CFW تحديداً؟</div>
+          <textarea class="qa-ta" id="q8" placeholder="كلمة أخيرة توجهها للإدارة..."></textarea>
+        </div>
+        <button class="qa-submit" id="submit-btn" onclick="submitApplication()">إرسال الطلب 🎮</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="tab-contact">
+  <div class="wrap">
+    <div class="sh"><div class="se">نحن هنا لمساعدتك</div><div class="st">تواصل معنا</div></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:1rem;max-width:700px;margin:0 auto">
+      <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;text-align:center">
+        <div style="font-size:2rem;margin-bottom:.75rem">💬</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--t1);margin-bottom:.35rem">سيرفر الديسكورد</div>
+        <div style="font-size:.83rem;color:var(--t2)">discord.gg/monacoCFW</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;text-align:center">
+        <div style="font-size:2rem;margin-bottom:.75rem">📋</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--t1);margin-bottom:.35rem">تذكرة دعم</div>
+        <div style="font-size:.83rem;color:var(--t2)">افتح تكت في قناة الدعم</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;text-align:center">
+        <div style="font-size:2rem;margin-bottom:.75rem">⏰</div>
+        <div style="font-size:.95rem;font-weight:700;color:var(--t1);margin-bottom:.35rem">أوقات الرد</div>
+        <div style="font-size:.83rem;color:var(--t2)">الرد على الطلبات خلال 24 ساعة</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="tab-admin">
+  <div class="wrap">
+    <div class="admhdr">
+      <div class="admrow">
+        <span style="font-size:1.4rem">👑</span>
+        <div>
+          <div class="admttl">لوحة الإدارة</div>
+          <div class="admsub"><span class="rdot"></span>طلبات التفعيل — حية من Firebase</div>
+        </div>
+      </div>
+      <button class="rfbtn" onclick="loadAdmin()"><span id="rf-ico">↻</span> تحديث</button>
+    </div>
+    <div class="sgrid2">
+      <div class="scard vi"><div class="scico">📋</div><div class="sclbl">إجمالي الطلبات</div><div class="scnum vc" id="a-total">0</div><div class="scnote">كل الطلبات المستلمة</div></div>
+      <div class="scard li"><div class="scico">⏳</div><div class="sclbl">قيد المراجعة</div><div class="scnum lc" id="a-pending">0</div><div class="scnote">لم يُبت فيها بعد</div></div>
+      <div class="scard lo"><div class="scico">✅</div><div class="sclbl">تمت الموافقة</div><div class="scnum oc" id="a-accepted">0</div><div class="scnote">تم القبول</div></div>
+      <div class="scard ac"><div class="scico">❌</div><div class="sclbl">مرفوضة</div><div class="scnum rc" id="a-rejected">0</div><div class="scnote">تم الرفض</div></div>
+    </div>
+    <div class="rbox">
+      <div class="rhead">
+        <div class="rttl">طلبات التفعيل</div>
+        <div class="rbadge">أحدث 30</div>
+      </div>
+      <div class="rlist" id="adm-list"><div class="empty">جارٍ التحميل...</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="flogo">MONACO CFW</div>
+  <div class="flinks">
+    <a onclick="goTab('home')">الرئيسية</a>
+    <a onclick="goTab('rules')">القوانين</a>
+    <a onclick="goTab('apply')">طلب التفعيل</a>
+    <a onclick="goTab('contact')">تواصل</a>
+  </div>
+  <div class="fcopy">© 2025 MONACO CFW — جميع الحقوق محفوظة</div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══ STATE ═══ */
+let user=null, theme='dark';
+
+/* ═══ FIREBASE TRACK ═══ */
+function track(type){
+  try{ db.ref('cfw_stats/'+type).transaction(v=>(v||0)+1); }catch(e){}
+}
+
+/* ═══ TABS ═══ */
+function goTab(t){
+  if(t==='apply'){
+    const wall=document.getElementById('apply-wall');
+    const form=document.getElementById('apply-form');
+    const sent=document.getElementById('apply-sent');
+    if(!user){wall.style.display='block';form.style.display='none';sent.style.display='none';}
+    else{wall.style.display='none';}
+  }
+  if(t==='admin'&&(!user||!ADMIN_IDS.includes(user.id)))return;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  const btn=document.querySelector(`.tb[data-tab="${t}"]`);
+  if(btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(t==='admin') loadAdmin();
+}
+
+/* ═══ RULES ACCORDION ═══ */
+function toggleSection(head){
+  const sec=head.parentElement;
+  sec.classList.toggle('open');
+}
+
+/* ═══ THEME ═══ */
+function toggleTheme(){
+  theme=theme==='dark'?'light':'dark';
+  document.body.className=theme;
+  document.getElementById('theme-btn').textContent=theme==='dark'?'🌙':'☀️';
+}
+
+/* ═══ APPLICATION ═══ */
+function submitApplication(){
+  const q1=document.getElementById('q1').value.trim();
+  const q2=document.getElementById('q2').value.trim();
+  const q3=document.getElementById('q3').value.trim();
+  const q4=document.getElementById('q4').value.trim();
+  const q5=document.getElementById('q5').value.trim();
+  const q7=document.getElementById('q7').value.trim();
+  if(!q1||!q2||!q3||!q4||!q5||!q7){
+    showToast('⚠️ يرجى الإجابة على جميع الأسئلة المطلوبة');return;
+  }
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;btn.textContent='جارٍ الإرسال...';
+  const answers={
+    'الاسم الكامل في الرول':q1,
+    'العمر الحقيقي':q2,
+    'تعريف Metagaming':q3,
+    'New Life Rule':q4,
+    'شخصية الرول وقصتها':q5,
+    'خبرة سابقة':document.getElementById('q6').value.trim()||'لا خبرة',
+    'قوانين السيرفر':q7,
+    'سبب الانضمام':document.getElementById('q8').value.trim()||'—'
+  };
+  try{
+    db.ref('cfw_applications').push({
+      timestamp:firebase.database.ServerValue.TIMESTAMP,
+      userId:user.id||'',username:user.username||'',
+      globalName:user.global_name||'',avatar:user.avatar||'',
+      answers,status:'pending'
+    });
+    db.ref('cfw_stats/total').transaction(v=>(v||0)+1);
+    db.ref('cfw_stats/pending').transaction(v=>(v||0)+1);
+  }catch(e){console.warn(e)}
+  document.getElementById('apply-form').style.display='none';
+  document.getElementById('apply-sent').style.display='block';
+  showToast('✅ تم إرسال طلبك بنجاح!');
+}
+
+/* ═══ ADMIN ═══ */
+function loadAdmin(){
+  document.getElementById('rf-ico').classList.add('spin');
+  db.ref('cfw_stats').once('value',snap=>{
+    document.getElementById('rf-ico').classList.remove('spin');
+    const d=snap.val()||{};
+    document.getElementById('a-total').textContent    = d.total||0;
+    document.getElementById('a-pending').textContent  = d.pending||0;
+    document.getElementById('a-accepted').textContent = d.accepted||0;
+    document.getElementById('a-rejected').textContent = d.rejected||0;
+  });
+  db.ref('cfw_applications').orderByChild('timestamp').limitToLast(30).once('value',snap=>{
+    const list=document.getElementById('adm-list');
+    if(!snap.val()){list.innerHTML='<div class="empty">لا توجد طلبات بعد</div>';return;}
+    const items=Object.entries(snap.val()).reverse();
+    list.innerHTML=items.map(([key,app])=>{
+      const av=app.userId&&app.avatar?`https://cdn.discordapp.com/avatars/${app.userId}/${app.avatar}.png?size=64`:'';
+      const nm=app.globalName||app.username||'Unknown';
+      const time=app.timestamp?new Date(app.timestamp).toLocaleString('ar-SA'):'—';
+      const avEl=av?`<img class="aav" src="${av}" onerror="this.style.display='none'">`:`<div class="aavp">${nm.charAt(0)}</div>`;
+      const badge=app.status==='accepted'?'<span class="abadge-a">مقبول ✅</span>':app.status==='rejected'?'<span class="abadge-r">مرفوض ❌</span>':'<span class="abadge-p">قيد المراجعة ⏳</span>';
+      const answers=Object.entries(app.answers||{}).map(([q,a])=>`
+        <div class="qa-ans-row"><span class="qa-ans-q">${q}</span><span class="qa-ans-a">${a}</span></div>`).join('');
+      const actions=app.status==='pending'?`
+        <button class="adm-btn accept" onclick="reviewApp('${key}','accepted')">✅ قبول</button>
+        <button class="adm-btn reject" onclick="reviewApp('${key}','rejected')">❌ رفض</button>`:'';
+      return `<div class="aitem">
+        <div class="aitem-top">${avEl}<div><div class="aname">${nm}</div><div class="auid">${app.userId||'—'}</div><div class="atime">${time}</div></div>${badge}</div>
+        <div class="qa-answers">${answers}</div>
+        <div class="adm-actions">${actions}</div>
+      </div>`;
+    }).join('');
+  });
+}
+
+function reviewApp(key,status){
+  db.ref('cfw_applications/'+key).update({status});
+  db.ref('cfw_stats/pending').transaction(v=>Math.max(0,(v||1)-1));
+  db.ref('cfw_stats/'+status).transaction(v=>(v||0)+1);
+  setTimeout(loadAdmin,500);
+  showToast(status==='accepted'?'✅ تم قبول الطلب':'❌ تم رفض الطلب');
+}
+
+db.ref('cfw_stats').on('value',snap=>{
+  if(!document.getElementById('tab-admin').classList.contains('active'))return;
+  const d=snap.val()||{};
+  const el=id=>{const e=document.getElementById(id);return e;};
+  if(el('a-total'))    el('a-total').textContent    = d.total||0;
+  if(el('a-pending'))  el('a-pending').textContent  = d.pending||0;
+  if(el('a-accepted')) el('a-accepted').textContent = d.accepted||0;
+  if(el('a-rejected')) el('a-rejected').textContent = d.rejected||0;
+});
+
+/* ═══ AUTH ═══ */
+function openOv(){document.getElementById('ov').classList.add('show')}
+function closeOv(){document.getElementById('ov').classList.remove('show')}
+document.getElementById('ov').addEventListener('click',e=>{if(e.target.id==='ov')closeOv()});
+
+function loginDiscord(){
+  const p=new URLSearchParams({client_id:DISCORD_CLIENT_ID,redirect_uri:DISCORD_REDIRECT_URI,response_type:'token',scope:'identify'});
+  window.location.href='https://discord.com/oauth2/authorize?'+p;
+}
+
+function setUser(u){
+  user=u;
+  const av=u.avatar?`https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=64`:'https://cdn.discordapp.com/embed/avatars/0.png';
+  const nm=u.global_name||u.username;
+  document.getElementById('auth-area').innerHTML=`
+    <div class="upill">
+      <img src="${av}" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+      <span class="uname">${nm}</span>
+      <button class="uout" onclick="logout()">✕</button>
+    </div>`;
+  if(ADMIN_IDS.includes(u.id)) document.getElementById('adm-tab').style.display='';
+  if(document.getElementById('tab-apply').classList.contains('active')){
+    document.getElementById('apply-wall').style.display='none';
+  }
+  closeOv();
+  showToast(`أهلاً ${nm}! 👋`);
+}
+
+function logout(){
+  user=null;
+  sessionStorage.removeItem('discord_token');
+  document.getElementById('adm-tab').style.display='none';
+  if(document.getElementById('tab-admin').classList.contains('active'))goTab('home');
+  if(document.getElementById('tab-apply').classList.contains('active')){
+    document.getElementById('apply-wall').style.display='block';
+  }
+  document.getElementById('auth-area').innerHTML=`
+    <button class="btn-d" onclick="openOv()">
+      <svg viewBox="0 0 24 24" fill="white" width="15" height="15"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      دخول
+    </button>`;
+}
+
+async function fetchMe(token){
+  try{const r=await fetch('https://discord.com/api/users/@me',{headers:{Authorization:'Bearer '+token}});if(!r.ok)return null;return await r.json();}
+  catch{return null;}
+}
+
+async function handleRedirect(){
+  const hash=window.location.hash.slice(1);
+  if(hash){
+    const p=new URLSearchParams(hash);
+    const token=p.get('access_token');
+    if(token){
+      history.replaceState(null,'',window.location.pathname);
+      sessionStorage.setItem('cfw_token',token);
+      const u=await fetchMe(token);
+      if(u)setUser(u);return;
+    }
+  }
+  const stored=sessionStorage.getItem('cfw_token');
+  if(stored){const u=await fetchMe(stored);if(u)setUser(u);else sessionStorage.removeItem('cfw_token');}
+}
+
+/* ═══ TOAST ═══ */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+/* ═══ INIT ═══ */
+track('visits');
+handleRedirect();
+</script>
+</body>
+</html>
