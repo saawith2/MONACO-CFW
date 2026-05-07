@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MONACO CFW | موناكو  </title>
+<title>MONACO CFW | موناكو ا</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -311,7 +311,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
         <button class="bg2" onclick="goTab('rules')">📜 اقرأ القوانين</button>
       </div>
       <div class="hstats">
-        <div><div class="sv">500+</div><div class="slbl">لاعب نشط</div></div>
+        <div><div class="sv">0+</div><div class="slbl">لاعب نشط</div></div>
         <div><div class="sv">24/7</div><div class="slbl">سيرفر مفتوح</div></div>
         <div><div class="sv">CFW</div><div class="slbl">إطار عمل مخصص</div></div>
       </div>
@@ -338,7 +338,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
           <div class="rule-item"><span class="rule-item-num">1.2</span><div class="rule-item-text">يُمنع الكلام خارج الشخصية <strong>(OOC)</strong> داخل المناطق الرسمية إلا عند الضرورة القصوى.</div></div>
           <div class="rule-item"><span class="rule-item-num">1.3</span><div class="rule-item-text">الالتزام بالميكروفون الجيد — الصوت المشوش أو المقطوع يؤثر على تجربة الجميع.</div></div>
           <div class="rule-item warn"><span class="rule-item-num">1.4</span><div class="rule-item-text">يُمنع منعاً باتاً الإفصاح عن هوية أي لاعب خارج السيرفر أو تسجيل المكالمات بدون إذن.</div></div>
-          <div class="rule-item"><span class="rule-item-num">1.5</span><div class="rule-item-text">التزم بالبقاء في الشخصية طوال جلسة اللعب <strong></strong>.</div></div>
+          <div class="rule-item"><span class="rule-item-num">1.5</span><div class="rule-item-text">التزم بالبقاء في الشخصية طوال جلسة اللعب  <strong></strong>.</div></div>
         </div>
       </div>
 
@@ -685,38 +685,55 @@ function submitApplication(){
     'قوانين السيرفر':q7,
     'سبب الانضمام':document.getElementById('q8').value.trim()||'—'
   };
+
+  // حفظ الطلب في Firebase أولاً
+  let appKey = null;
   try{
-    db.ref('cfw_applications').push({
+    const ref = db.ref('cfw_applications').push({
       timestamp:firebase.database.ServerValue.TIMESTAMP,
       userId:user.id||'',username:user.username||'',
       globalName:user.global_name||'',avatar:user.avatar||'',
       answers,status:'pending'
     });
+    appKey = ref.key;
     db.ref('cfw_stats/total').transaction(v=>(v||0)+1);
     db.ref('cfw_stats/pending').transaction(v=>(v||0)+1);
   }catch(e){console.warn(e)}
-  // Webhook
+
+  // إرسال الويبهوك مع wait=true لنحصل على message_id
   const av=user.avatar?`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`:'https://cdn.discordapp.com/embed/avatars/0.png';
-  fetch(CFW_WEBHOOK,{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({embeds:[{
-      title:'🎮 طلب تفعيل جديد — MONACO CFW',
-      color:0xb8c8dc,
-      thumbnail:{url:av},
-      fields:[
-        {name:'👤 المتقدم',      value:`${user.global_name||user.username}\n\`${user.id}\``,  inline:true},
-        {name:'📛 الاسم في الرول', value:q1,                                                  inline:true},
-        {name:'🎂 العمر',         value:q2,                                                   inline:true},
-        {name:'🧠 Metagaming',    value:q3.slice(0,200)+(q3.length>200?'...':''),             inline:false},
-        {name:'💀 New Life Rule', value:q4.slice(0,200)+(q4.length>200?'...':''),             inline:false},
-        {name:'🎭 الشخصية',       value:q5.slice(0,200)+(q5.length>200?'...':''),             inline:false},
-        {name:'📜 القوانين',       value:q7.slice(0,200)+(q7.length>200?'...':''),             inline:false},
-        {name:'🔖 الحالة',        value:'🟡 قيد المراجعة',                                     inline:true},
-      ],
-      footer:{text:'MONACO CFW • نظام التفعيل'},
-      timestamp:new Date().toISOString()
-    }]})
-  }).catch(e=>console.warn(e));
+  const embed = {
+    title:'🎮 طلب تفعيل جديد — MONACO CFW',
+    color:0xf0c040,
+    thumbnail:{url:av},
+    fields:[
+      {name:'👤 المتقدم',       value:`${user.global_name||user.username}\n\`${user.id}\``, inline:true},
+      {name:'📛 الاسم في الرول',value:q1,                                                  inline:true},
+      {name:'🎂 العمر',          value:q2,                                                  inline:true},
+      {name:'🧠 Metagaming',     value:q3.slice(0,200)+(q3.length>200?'...':''),            inline:false},
+      {name:'💀 New Life Rule',  value:q4.slice(0,200)+(q4.length>200?'...':''),            inline:false},
+      {name:'🎭 الشخصية',        value:q5.slice(0,200)+(q5.length>200?'...':''),            inline:false},
+      {name:'📜 القوانين',        value:q7.slice(0,200)+(q7.length>200?'...':''),            inline:false},
+      {name:'🔖 الحالة',         value:'🟡 قيد المراجعة',                                    inline:true},
+    ],
+    footer:{text:'MONACO CFW • نظام التفعيل'},
+    timestamp:new Date().toISOString()
+  };
+
+  // wait=true يرجع الرسالة مع id
+  fetch(CFW_WEBHOOK + '?wait=true', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({embeds:[embed]})
+  })
+  .then(r=>r.json())
+  .then(msg=>{
+    // حفظ message_id في Firebase
+    if(msg?.id && appKey){
+      db.ref('cfw_applications/'+appKey).update({messageId: msg.id});
+    }
+  })
+  .catch(e=>console.warn(e));
 
   document.getElementById('apply-form').style.display='none';
   document.getElementById('apply-sent').style.display='block';
@@ -747,8 +764,8 @@ function loadAdmin(){
       const answers=Object.entries(app.answers||{}).map(([q,a])=>`
         <div class="qa-ans-row"><span class="qa-ans-q">${q}</span><span class="qa-ans-a">${a}</span></div>`).join('');
       const actions=app.status==='pending'?`
-        <button class="adm-btn accept" onclick="reviewApp('${key}','accepted')">✅ قبول</button>
-        <button class="adm-btn reject" onclick="reviewApp('${key}','rejected')">❌ رفض</button>`:'';
+        <button class="adm-btn accept" onclick="reviewApp('${key}','accepted','${app.messageId||''}','${app.globalName||app.username||''}')">✅ قبول</button>
+        <button class="adm-btn reject" onclick="reviewApp('${key}','rejected','${app.messageId||''}','${app.globalName||app.username||''}')">❌ رفض</button>`:'';
       return `<div class="aitem">
         <div class="aitem-top">${avEl}<div><div class="aname">${nm}</div><div class="auid">${app.userId||'—'}</div><div class="atime">${time}</div></div>${badge}</div>
         <div class="qa-answers">${answers}</div>
@@ -758,12 +775,36 @@ function loadAdmin(){
   });
 }
 
-function reviewApp(key,status){
+function reviewApp(key, status, messageId, username){
+  // تحديث Firebase
   db.ref('cfw_applications/'+key).update({status});
   db.ref('cfw_stats/pending').transaction(v=>Math.max(0,(v||1)-1));
   db.ref('cfw_stats/'+status).transaction(v=>(v||0)+1);
-  setTimeout(loadAdmin,500);
-  showToast(status==='accepted'?'✅ تم قبول الطلب':'❌ تم رفض الطلب');
+
+  // تعديل الإمبيد في ديسكورد
+  if(messageId){
+    const isAccepted = status === 'accepted';
+    const updatedEmbed = {
+      title: isAccepted ? '✅ تم القبول — MONACO CFW' : '❌ تم الرفض — MONACO CFW',
+      color: isAccepted ? 0x4ade80 : 0xf87171,
+      fields:[
+        {name:'👤 المتقدم',  value:username||'—',                                                        inline:true},
+        {name:'🔖 الحالة',  value: isAccepted ? '🟢 مقبول' : '🔴 مرفوض',                                inline:true},
+        {name:'⏰ وقت القرار', value: new Date().toLocaleString('ar-SA'),                                inline:true},
+      ],
+      footer:{text:'MONACO CFW • نظام التفعيل'},
+      timestamp: new Date().toISOString()
+    };
+
+    fetch(`${CFW_WEBHOOK}/messages/${messageId}`, {
+      method: 'PATCH',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({embeds:[updatedEmbed]})
+    }).catch(e=>console.warn(e));
+  }
+
+  setTimeout(loadAdmin, 500);
+  showToast(status==='accepted' ? '✅ تم قبول الطلب وتحديث الإمبيد' : '❌ تم رفض الطلب وتحديث الإمبيد');
 }
 
 db.ref('cfw_stats').on('value',snap=>{
