@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MONACO CFW | سيرفر الرول بلاي</title>
+<title>MONACO CFW | موناكو </title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -58,7 +58,16 @@ body{font-family:var(--ff);background:var(--bg);color:var(--t1);min-height:100vh
 ::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:3px}
 
 /* NAV */
-nav{position:sticky;top:0;z-index:300;background:var(--nav);backdrop-filter:blur(22px);border-bottom:1px solid var(--bd);display:flex;align-items:center;min-height:62px;padding:0 clamp(.75rem,3vw,2rem);gap:.5rem;flex-wrap:wrap}
+nav{
+  position:sticky;top:0;z-index:300;
+  background:var(--nav);backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;
+  min-height:62px;
+  padding:0 clamp(.75rem,3vw,2rem);
+  gap:.5rem;
+  flex-wrap:wrap;
+}
 .logo{font-family:var(--fb);font-size:1.3rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;background:linear-gradient(135deg,var(--sl),var(--sl2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0}
 .nav-mid{display:flex;gap:.15rem;flex:1;justify-content:center;overflow-x:auto;scrollbar-width:none;min-width:0}
 .nav-mid::-webkit-scrollbar{display:none}
@@ -78,9 +87,17 @@ nav{position:sticky;top:0;z-index:300;background:var(--nav);backdrop-filter:blur
 .uname{font-size:.78rem;font-weight:700;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px}
 .uout{background:none;border:none;color:var(--t3);cursor:pointer;font-size:.75rem;padding:0 2px;transition:color var(--tr);font-family:var(--ff)}
 .uout:hover{color:var(--red)}
+
+/* DESKTOP: كل شي في صف واحد */
+@media(min-width:641px){
+  nav{flex-wrap:nowrap;height:62px}
+  .nav-mid{flex:1}
+}
+/* MOBILE: التبويبات تنزل تحت */
 @media(max-width:640px){
   nav{padding:.5rem .75rem;gap:.3rem}
-  .nav-mid{order:3;width:100%;border-top:1px solid var(--bd);padding-top:.35rem;justify-content:flex-start}
+  .nav-mid{order:3;width:100%;border-top:1px solid var(--bd);padding-top:.35rem;justify-content:flex-start;flex:none}
+  .nav-r{margin-inline-start:auto}
   .tb{padding:5px 10px;font-size:.78rem}
   .logo{font-size:1.1rem}
 }
@@ -294,7 +311,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
         <button class="bg2" onclick="goTab('rules')">📜 اقرأ القوانين</button>
       </div>
       <div class="hstats">
-        <div><div class="sv">0+</div><div class="slbl">لاعب نشط</div></div>
+        <div><div class="sv">500+</div><div class="slbl">لاعب نشط</div></div>
         <div><div class="sv">24/7</div><div class="slbl">سيرفر مفتوح</div></div>
         <div><div class="sv">CFW</div><div class="slbl">إطار عمل مخصص</div></div>
       </div>
@@ -321,7 +338,8 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
           <div class="rule-item"><span class="rule-item-num">1.2</span><div class="rule-item-text">يُمنع الكلام خارج الشخصية <strong>(OOC)</strong> داخل المناطق الرسمية إلا عند الضرورة القصوى.</div></div>
           <div class="rule-item"><span class="rule-item-num">1.3</span><div class="rule-item-text">الالتزام بالميكروفون الجيد — الصوت المشوش أو المقطوع يؤثر على تجربة الجميع.</div></div>
           <div class="rule-item warn"><span class="rule-item-num">1.4</span><div class="rule-item-text">يُمنع منعاً باتاً الإفصاح عن هوية أي لاعب خارج السيرفر أو تسجيل المكالمات بدون إذن.</div></div>
-          <div class="rule-item"><span class="rule-item-num">1.5</span><div class="rule-item-text">التزم بالبقاء في الشخصية طوال جلسة اللعب
+          <div class="rule-item"><span class="rule-item-num">1.5</span><div class="rule-item-text">التزم بالبقاء في الشخصية طوال جلسة اللعب  <strong></strong>.</div></div>
+        </div>
       </div>
 
       <!-- قوانين الرول بلاي -->
