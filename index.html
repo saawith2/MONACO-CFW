@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MONACO CFW | موناكو </title>
+<title>MONACO CFW | موناكو  </title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -338,7 +338,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
           <div class="rule-item"><span class="rule-item-num">1.2</span><div class="rule-item-text">يُمنع الكلام خارج الشخصية <strong>(OOC)</strong> داخل المناطق الرسمية إلا عند الضرورة القصوى.</div></div>
           <div class="rule-item"><span class="rule-item-num">1.3</span><div class="rule-item-text">الالتزام بالميكروفون الجيد — الصوت المشوش أو المقطوع يؤثر على تجربة الجميع.</div></div>
           <div class="rule-item warn"><span class="rule-item-num">1.4</span><div class="rule-item-text">يُمنع منعاً باتاً الإفصاح عن هوية أي لاعب خارج السيرفر أو تسجيل المكالمات بدون إذن.</div></div>
-          <div class="rule-item"><span class="rule-item-num">1.5</span><div class="rule-item-text">التزم بالبقاء في الشخصية طوال جلسة اللعب  <strong></strong>.</div></div>
+          <div class="rule-item"><span class="rule-item-num">1.5</span><div class="rule-item-text">التزم بالبقاء في الشخصية طوال جلسة اللعب <strong></strong>.</div></div>
         </div>
       </div>
 
@@ -585,11 +585,17 @@ function track(type){
 /* ═══ TABS ═══ */
 function goTab(t){
   if(t==='apply'){
-    const wall=document.getElementById('apply-wall');
-    const form=document.getElementById('apply-form');
-    const sent=document.getElementById('apply-sent');
-    if(!user){wall.style.display='block';form.style.display='none';sent.style.display='none';}
-    else{wall.style.display='none';}
+    const wall = document.getElementById('apply-wall');
+    const form = document.getElementById('apply-form');
+    const sent = document.getElementById('apply-sent');
+    if(!user){
+      wall.style.display='block';
+      form.style.display='none';
+      sent.style.display='none';
+    } else {
+      wall.style.display='none';
+      checkExistingApplication();
+    }
   }
   if(t==='admin'&&(!user||!ADMIN_IDS.includes(user.id)))return;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -599,6 +605,48 @@ function goTab(t){
   if(btn) btn.classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
   if(t==='admin') loadAdmin();
+}
+
+/* ═══ CHECK EXISTING APPLICATION ═══ */
+function checkExistingApplication(){
+  const form = document.getElementById('apply-form');
+  const sent = document.getElementById('apply-sent');
+
+  db.ref('cfw_applications').orderByChild('userId').equalTo(user.id).once('value', snap => {
+    if(!snap.val()){
+      // ما في طلب — اعرض الفورم
+      form.style.display='block';
+      sent.style.display='none';
+      return;
+    }
+
+    const apps = Object.values(snap.val());
+    // آخر طلب
+    const latest = apps.sort((a,b)=>(b.timestamp||0)-(a.timestamp||0))[0];
+
+    if(latest.status === 'rejected'){
+      // مرفوض — اعرض الفورم مجدداً
+      form.style.display='block';
+      sent.style.display='none';
+      showToast('طلبك السابق تم رفضه — يمكنك التقديم مجدداً');
+    } else {
+      // قيد المراجعة أو مقبول — اعرض رسالة الانتظار
+      form.style.display='none';
+      sent.style.display='block';
+      // حدّث نص الرسالة حسب الحالة
+      const h2 = sent.querySelector('h2');
+      const p  = sent.querySelector('p');
+      if(latest.status === 'accepted'){
+        sent.querySelector('.sent-ico').textContent='✅';
+        if(h2) h2.textContent='تم قبول طلبك!';
+        if(p)  p.textContent='مبروك! تم قبولك في MONACO CFW — تحقق من رتبتك في السيرفر.';
+      } else {
+        sent.querySelector('.sent-ico').textContent='⏳';
+        if(h2) h2.textContent='تم إرسال طلبك!';
+        if(p)  p.innerHTML='طلبك قيد المراجعة — سيتم الرد عليك في ديسكورد خلال 24 ساعة.<br><br>تأكد من تفعيل الإشعارات في السيرفر.';
+      }
+    }
+  });
 }
 
 /* ═══ RULES ACCORDION ═══ */
