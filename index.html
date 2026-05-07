@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MONACO CFW |  موناكو </title>
+<title>MONACO CFW | موناكو</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -295,7 +295,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
       </div>
       <div class="hstats">
         <div><div class="sv">0+</div><div class="slbl">لاعب نشط</div></div>
-        <div><div class="sv">علي حسب</div><div class="slbl">سيرفر مفتوح</div></div>
+        <div><div class="sv">24/7</div><div class="slbl">سيرفر مفتوح</div></div>
         <div><div class="sv">CFW</div><div class="slbl">إطار عمل مخصص</div></div>
       </div>
     </div>
@@ -318,7 +318,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
         </div>
         <div class="rule-body">
           <div class="rule-item ok"><span class="rule-item-num">1.1</span><div class="rule-item-text">الاحترام واجب بين جميع اللاعبين داخل وخارج الرول — أي إهانة أو تنمر يُعرّض صاحبه للطرد الفوري.</div></div>
-          <div class="rule-item"><span class="rule-item-num">1.2</span><div class="rule-item-text">يُمنع الكلام خارج الشخصية <strong></strong> داخل المناطق الرسمية إلا عند الضرورة القصوى.</div></div>
+          <div class="rule-item"><span class="rule-item-num">1.2</span><div class="rule-item-text">يُمنع الكلام خارج الشخصية <strong>(OOC)</strong> داخل المناطق الرسمية إلا عند الضرورة القصوى.</div></div>
           <div class="rule-item"><span class="rule-item-num">1.3</span><div class="rule-item-text">الالتزام بالميكروفون الجيد — الصوت المشوش أو المقطوع يؤثر على تجربة الجميع.</div></div>
           <div class="rule-item warn"><span class="rule-item-num">1.4</span><div class="rule-item-text">يُمنع منعاً باتاً الإفصاح عن هوية أي لاعب خارج السيرفر أو تسجيل المكالمات بدون إذن.</div></div>
           <div class="rule-item"><span class="rule-item-num">1.5</span><div class="rule-item-text">التزم بالبقاء في الشخصية طوال جلسة اللعب <strong></strong>.</div></div>
@@ -499,7 +499,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
       <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;text-align:center">
         <div style="font-size:2rem;margin-bottom:.75rem">💬</div>
         <div style="font-size:.95rem;font-weight:700;color:var(--t1);margin-bottom:.35rem">سيرفر الديسكورد</div>
-        <div style="font-size:.83rem;color:var(--t2)">https://discord.gg/kRfaS8GZuP/</div>
+        <div style="font-size:.83rem;color:var(--t2)">discord.gg/monacoCFW</div>
       </div>
       <div style="background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:1.5rem;text-align:center">
         <div style="font-size:2rem;margin-bottom:.75rem">📋</div>
@@ -557,7 +557,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
 <div class="toast" id="toast"></div>
 
 <script>
-/* ═══ STATE ═══ */
+const CFW_WEBHOOK = 'https://discord.com/api/webhooks/1501734837256585247/WNlJzK-_Xmsuz9tutXHEXGXN1FCrV3dfkArfDFuENoW66rpg8NDqcIGrkVNhLRu0wE6K';
 let user=null, theme='dark';
 
 /* ═══ FIREBASE TRACK ═══ */
@@ -630,6 +630,29 @@ function submitApplication(){
     db.ref('cfw_stats/total').transaction(v=>(v||0)+1);
     db.ref('cfw_stats/pending').transaction(v=>(v||0)+1);
   }catch(e){console.warn(e)}
+  // Webhook
+  const av=user.avatar?`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`:'https://cdn.discordapp.com/embed/avatars/0.png';
+  fetch(CFW_WEBHOOK,{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({embeds:[{
+      title:'🎮 طلب تفعيل جديد — MONACO CFW',
+      color:0xb8c8dc,
+      thumbnail:{url:av},
+      fields:[
+        {name:'👤 المتقدم',      value:`${user.global_name||user.username}\n\`${user.id}\``,  inline:true},
+        {name:'📛 الاسم في الرول', value:q1,                                                  inline:true},
+        {name:'🎂 العمر',         value:q2,                                                   inline:true},
+        {name:'🧠 Metagaming',    value:q3.slice(0,200)+(q3.length>200?'...':''),             inline:false},
+        {name:'💀 New Life Rule', value:q4.slice(0,200)+(q4.length>200?'...':''),             inline:false},
+        {name:'🎭 الشخصية',       value:q5.slice(0,200)+(q5.length>200?'...':''),             inline:false},
+        {name:'📜 القوانين',       value:q7.slice(0,200)+(q7.length>200?'...':''),             inline:false},
+        {name:'🔖 الحالة',        value:'🟡 قيد المراجعة',                                     inline:true},
+      ],
+      footer:{text:'MONACO CFW • نظام التفعيل'},
+      timestamp:new Date().toISOString()
+    }]})
+  }).catch(e=>console.warn(e));
+
   document.getElementById('apply-form').style.display='none';
   document.getElementById('apply-sent').style.display='block';
   showToast('✅ تم إرسال طلبك بنجاح!');
