@@ -741,19 +741,24 @@ function submitApplication(){
 
   // إرسال الويبهوك مع wait=true لنحصل على message_id
   const av=user.avatar?`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`:'https://cdn.discordapp.com/embed/avatars/0.png';
+  const q6=document.getElementById('q6').value.trim()||'لا خبرة';
+  const q8=document.getElementById('q8').value.trim()||'—';
+
   const embed = {
     title:'🎮 طلب تفعيل جديد — MONACO CFW',
     color:0xf0c040,
     thumbnail:{url:av},
     fields:[
-      {name:'👤 المتقدم',       value:`${user.global_name||user.username}\n\`${user.id}\``, inline:true},
-      {name:'📛 الاسم في الرول',value:q1,                                                  inline:true},
-      {name:'🎂 العمر',          value:q2,                                                  inline:true},
-      {name:'🧠 Metagaming',     value:q3.slice(0,200)+(q3.length>200?'...':''),            inline:false},
-      {name:'💀 New Life Rule',  value:q4.slice(0,200)+(q4.length>200?'...':''),            inline:false},
-      {name:'🎭 الشخصية',        value:q5.slice(0,200)+(q5.length>200?'...':''),            inline:false},
-      {name:'📜 القوانين',        value:q7.slice(0,200)+(q7.length>200?'...':''),            inline:false},
-      {name:'🔖 الحالة',         value:'🟡 قيد المراجعة',                                    inline:true},
+      {name:'👤 المتقدم',          value:`${user.global_name||user.username}\n\`${user.id}\``, inline:true},
+      {name:'📛 الاسم في الرول',   value:q1,                                                   inline:true},
+      {name:'🎂 العمر',             value:q2,                                                   inline:true},
+      {name:'🧠 ما هو Metagaming وكيف تتجنبه؟',  value:q3.slice(0,1000)+(q3.length>1000?'...':''),  inline:false},
+      {name:'💀 ما هي New Life Rule؟',            value:q4.slice(0,1000)+(q4.length>1000?'...':''),  inline:false},
+      {name:'🎭 شخصيتك في الرول وقصتها',          value:q5.slice(0,1000)+(q5.length>1000?'...':''),  inline:false},
+      {name:'🏆 خبرة سابقة في الرول بلاي',        value:q6.slice(0,1000)+(q6.length>1000?'...':''),  inline:false},
+      {name:'📜 قانونان من قوانين السيرفر',         value:q7.slice(0,1000)+(q7.length>1000?'...':''),  inline:false},
+      {name:'💬 لماذا تريد الانضمام لـ MONACO CFW؟',value:q8.slice(0,1000)+(q8.length>1000?'...':''), inline:false},
+      {name:'🔖 الحالة',            value:'🟡 قيد المراجعة',                                     inline:true},
     ],
     footer:{text:'MONACO CFW • نظام التفعيل'},
     timestamp:new Date().toISOString()
