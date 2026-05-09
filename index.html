@@ -1,16 +1,16 @@
-<!DOCTYPE html>
+ط<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MONACO CFW | موناكو </title>
+<title>MONACO CFW | سيرفر الرول بلاي</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <script>
 const DISCORD_CLIENT_ID    = '1498437523100270724';
-const DISCORD_REDIRECT_URI = 'https://saawith2.github.io/MONACO-CFW/';
+const DISCORD_REDIRECT_URI = 'https://saawith2.github.io/MONACO-WEB/cfwsite/';
 const ADMIN_IDS = ['1433068059094155375','1266569651664457738','1286766140957134859'];
 const firebaseConfig = {
   apiKey:"AIzaSyCNJIltzCfhfYtWgyksNp5_50txVRLO-v4",
@@ -115,13 +115,8 @@ nav{
 
 /* HERO */
 .hero{min-height:calc(100vh - 62px);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:4rem clamp(1rem,5vw,3rem);text-align:center}
-.hbg{position:absolute;inset:0;pointer-events:none;
-  background-image:url('https://saawith2.github.io/MONACO-CFW/banner.png');
-  background-size:cover;background-position:center top;
-  filter:brightness(.35);
-}
-.hbg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top, var(--bg) 0%, transparent 50%)}
-.hgrid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);background-size:55px 55px;opacity:.25;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent 70%)}
+.hbg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 55% at 50% 35%,var(--bg3) 0%,transparent 65%),radial-gradient(ellipse 40% 30% at 15% 75%,var(--bg2) 0%,transparent 55%),radial-gradient(ellipse 40% 30% at 85% 75%,var(--bg2) 0%,transparent 55%)}
+.hgrid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);background-size:55px 55px;opacity:.45;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent 70%)}
 .hc{position:relative;z-index:2;max-width:700px}
 .hpill{display:inline-flex;align-items:center;gap:8px;background:var(--tag);border:1px solid var(--bd2);color:var(--t2);padding:5px 16px 5px 8px;border-radius:20px;font-size:.78rem;font-weight:600;margin-bottom:1.75rem}
 .pdot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 2s infinite}
@@ -238,17 +233,7 @@ body.light .qa-submit{background:linear-gradient(135deg,#2a3a58,#4a5a7a);color:#
 .adm-btn.reject:hover{background:rgba(248,113,113,.15)}
 .empty{text-align:center;padding:3rem;color:var(--t3);font-size:.88rem}
 
-/* REJECTED LOCK STATE */
-.lock-box{text-align:center;padding:2.5rem 2rem;background:var(--bg2);border:1px solid rgba(248,113,113,.25);border-radius:16px}
-.lock-ico{font-size:3rem;margin-bottom:1rem}
-.lock-box h2{font-size:1.1rem;font-weight:800;color:var(--red);margin-bottom:.5rem}
-.lock-box p{font-size:.85rem;color:var(--t2);line-height:1.7;margin-bottom:1.5rem}
-.countdown-wrap{display:flex;justify-content:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
-.cd-block{background:var(--bg3);border:1px solid rgba(248,113,113,.3);border-radius:12px;padding:.85rem 1.25rem;min-width:72px}
-.cd-num{font-family:var(--fb);font-size:2rem;font-weight:700;color:var(--red);line-height:1}
-.cd-lbl{font-size:.7rem;color:var(--t3);margin-top:4px;letter-spacing:.5px}
-.cd-progress{height:4px;border-radius:2px;background:var(--bd);margin-top:1.25rem;overflow:hidden}
-.cd-bar{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--red),var(--orange));transition:width 1s linear}
+/* AUTH OVERLAY */
 .ov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s}
 .ov.show{opacity:1;pointer-events:all}
 .modal{background:var(--bg3);border:1px solid var(--bd2);border-radius:24px;padding:2.5rem;max-width:390px;width:100%;text-align:center;transform:translateY(16px);transition:transform .3s;position:relative}
@@ -326,7 +311,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
         <button class="bg2" onclick="goTab('rules')">📜 اقرأ القوانين</button>
       </div>
       <div class="hstats">
-        <div><div class="sv">0+</div><div class="slbl">لاعب نشط</div></div>
+        <div><div class="sv">500+</div><div class="slbl">لاعب نشط</div></div>
         <div><div class="sv">24/7</div><div class="slbl">سيرفر مفتوح</div></div>
         <div><div class="sv">CFW</div><div class="slbl">إطار عمل مخصص</div></div>
       </div>
@@ -349,7 +334,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
         </div>
         <div class="rule-body">
           <div class="rule-item ok"><span class="rule-item-num">1.1</span><div class="rule-item-text">الاحترام واجب بين جميع اللاعبين داخل وخارج الرول — أي إهانة أو تنمر يُعرّض صاحبه للطرد الفوري.</div></div>
-          <div class="rule-item"><span class="rule-item-num">1.2</span><div class="rule-item-text">يُمنع الكلام خارج الشخصية <strong></strong> داخل المناطق الرسمية إلا عند الضرورة القصوى  <strong></strong>.</div></div>
+          <div class="rule-item"><span class="rule-item-num">1.2</span><div class="rule-item-text">يُمنع الكلام خارج الشخصية <strong>(OOC)</strong> داخل المناطق الرسمية إلا عند الضرورة القصوى باستخدام <strong>/ooc</strong>.</div></div>
           <div class="rule-item"><span class="rule-item-num">1.3</span><div class="rule-item-text">الالتزام بميكروفون واضح وجيد — الصوت المشوش أو المقطوع يؤثر سلباً على تجربة جميع اللاعبين.</div></div>
           <div class="rule-item warn"><span class="rule-item-num">1.4</span><div class="rule-item-text">يُمنع منعاً باتاً تسجيل المكالمات أو الإفصاح عن هوية أي لاعب خارج السيرفر بدون إذن صريح.</div></div>
           <div class="rule-item warn"><span class="rule-item-num">1.5</span><div class="rule-item-text">يُمنع مشاركة أي محتوى مسيء أو صور غير لائقة في أي قناة من قنوات السيرفر.</div></div>
@@ -366,7 +351,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
           <span class="rule-chevron">▼</span>
         </div>
         <div class="rule-body">
-          <div class="rule-item danger"><span class="rule-item-num">2.1</span><div class="rule-item-text"><strong>No Powergaming:</strong> يُمنع فرض أفعال على اللاعبين بدون إعطائهم فرصة للرد — مثال: "أمسك يده" بدون إذن.</div></div>
+          <div class="rule-item danger"><span class="rule-item-num">2.1</span><div class="rule-item-text"><strong>No Powergaming:</strong> يُمنع فرض أفعال على اللاعبين بدون إعطائهم فرصة للرد — مثال: "أمسك يده وأكسرها" بدون إذن.</div></div>
           <div class="rule-item danger"><span class="rule-item-num">2.2</span><div class="rule-item-text"><strong>No Metagaming:</strong> يُمنع استخدام معلومات خارج الرول (ديسكورد، مكالمات خارجية) داخل اللعبة تحت أي ظرف.</div></div>
           <div class="rule-item danger"><span class="rule-item-num">2.3</span><div class="rule-item-text"><strong>Value Your Life:</strong> شخصيتك تقدّر حياتها — لا تتصرف بتهور أو تخاطر بحياتها في مواقف لا تتيح ذلك واقعياً.</div></div>
           <div class="rule-item warn"><span class="rule-item-num">2.4</span><div class="rule-item-text"><strong>New Life Rule:</strong> بعد الوفاة تنسى كل ما جرى في تلك الحادثة تماماً — لا تعود لنفس المكان أو تأخذ ثأرك قبل مرور 30 دقيقة.</div></div>
@@ -458,7 +443,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
         <div class="rule-body">
           <div class="rule-item ok"><span class="rule-item-num">7.1</span><div class="rule-item-text">نظام القضاء متاح للجميع — يمكن رفع قضايا رولية ضد أي لاعب عبر المحكمة الرسمية في السيرفر.</div></div>
           <div class="rule-item"><span class="rule-item-num">7.2</span><div class="rule-item-text">الأحكام القضائية ملزمة رولياً — لا يمكن تجاهل أحكام المحكمة أو الهروب منها بدون سياق رولي.</div></div>
-          <div class="rule-item warn"><span class="rule-item-num">7.3</span><div class="rule-item-text">مدة الاحتجاز القصوى بدون محاكمة <strong></strong> — ما فوق ذلك يُعتبر احتجازاً تعسفياً.</div></div>
+          <div class="rule-item warn"><span class="rule-item-num">7.3</span><div class="rule-item-text">مدة الاحتجاز القصوى بدون محاكمة <strong>60 دقيقة</strong> — ما فوق ذلك يُعتبر احتجازاً تعسفياً.</div></div>
           <div class="rule-item"><span class="rule-item-num">7.4</span><div class="rule-item-text">لكل متهم الحق في محامٍ — يمكن طلب محامي دفاع من أعضاء السيرفر المتخصصين في هذا الدور.</div></div>
           <div class="rule-item ok"><span class="rule-item-num">7.5</span><div class="rule-item-text">الأدلة الرولية (تسجيلات، شهود) معتمدة في المحاكم — احتفظ بأدلتك لتقديمها عند الحاجة.</div></div>
           <div class="rule-item warn"><span class="rule-item-num">7.6</span><div class="rule-item-text">ممنوع إهانة القضاة أو التأثير على مجريات المحاكمة خارج الإطار الرولي — احترم نظام العدالة.</div></div>
@@ -490,21 +475,6 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
 <div class="page" id="tab-apply">
   <div class="wrap">
     <div class="sh"><div class="se">انضم لعالم الرول بلاي</div><div class="st">طلب التفعيل</div></div>
-
-    <!-- rejected lock -->
-    <div id="apply-locked" style="display:none">
-      <div class="lock-box">
-        <div class="lock-ico">🔒</div>
-        <h2>تم رفض طلبك</h2>
-        <p>يمكنك إعادة التقديم بعد انتهاء فترة الانتظار — راجع القوانين جيداً قبل التقديم مجدداً.</p>
-        <div class="countdown-wrap">
-          <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">ساعة</div></div>
-          <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">دقيقة</div></div>
-          <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">ثانية</div></div>
-        </div>
-        <div class="cd-progress"><div class="cd-bar" id="cd-bar" style="width:100%"></div></div>
-      </div>
-    </div>
 
     <!-- login wall -->
     <div id="apply-wall" style="display:none">
@@ -769,7 +739,40 @@ function submitApplication(){
     db.ref('cfw_stats/pending').transaction(v=>(v||0)+1);
   }catch(e){console.warn(e)}
 
-  // الويبهوك يُرسله البوت مع أزرار القبول والرفض
+  // إرسال الويبهوك مع wait=true لنحصل على message_id
+  const av=user.avatar?`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`:'https://cdn.discordapp.com/embed/avatars/0.png';
+  const embed = {
+    title:'🎮 طلب تفعيل جديد — MONACO CFW',
+    color:0xf0c040,
+    thumbnail:{url:av},
+    fields:[
+      {name:'👤 المتقدم',       value:`${user.global_name||user.username}\n\`${user.id}\``, inline:true},
+      {name:'📛 الاسم في الرول',value:q1,                                                  inline:true},
+      {name:'🎂 العمر',          value:q2,                                                  inline:true},
+      {name:'🧠 Metagaming',     value:q3.slice(0,200)+(q3.length>200?'...':''),            inline:false},
+      {name:'💀 New Life Rule',  value:q4.slice(0,200)+(q4.length>200?'...':''),            inline:false},
+      {name:'🎭 الشخصية',        value:q5.slice(0,200)+(q5.length>200?'...':''),            inline:false},
+      {name:'📜 القوانين',        value:q7.slice(0,200)+(q7.length>200?'...':''),            inline:false},
+      {name:'🔖 الحالة',         value:'🟡 قيد المراجعة',                                    inline:true},
+    ],
+    footer:{text:'MONACO CFW • نظام التفعيل'},
+    timestamp:new Date().toISOString()
+  };
+
+  // wait=true يرجع الرسالة مع id
+  fetch(CFW_WEBHOOK + '?wait=true', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({embeds:[embed]})
+  })
+  .then(r=>r.json())
+  .then(msg=>{
+    // حفظ message_id في Firebase
+    if(msg?.id && appKey){
+      db.ref('cfw_applications/'+appKey).update({messageId: msg.id});
+    }
+  })
+  .catch(e=>console.warn(e));
 
   document.getElementById('apply-form').style.display='none';
   document.getElementById('apply-sent').style.display='block';
