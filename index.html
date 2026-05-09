@@ -238,17 +238,7 @@ body.light .qa-submit{background:linear-gradient(135deg,#2a3a58,#4a5a7a);color:#
 .adm-btn.reject:hover{background:rgba(248,113,113,.15)}
 .empty{text-align:center;padding:3rem;color:var(--t3);font-size:.88rem}
 
-/* REJECTED LOCK STATE */
-.lock-box{text-align:center;padding:2.5rem 2rem;background:var(--bg2);border:1px solid rgba(248,113,113,.25);border-radius:16px}
-.lock-ico{font-size:3rem;margin-bottom:1rem}
-.lock-box h2{font-size:1.1rem;font-weight:800;color:var(--red);margin-bottom:.5rem}
-.lock-box p{font-size:.85rem;color:var(--t2);line-height:1.7;margin-bottom:1.5rem}
-.countdown-wrap{display:flex;justify-content:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
-.cd-block{background:var(--bg3);border:1px solid rgba(248,113,113,.3);border-radius:12px;padding:.85rem 1.25rem;min-width:72px}
-.cd-num{font-family:var(--fb);font-size:2rem;font-weight:700;color:var(--red);line-height:1}
-.cd-lbl{font-size:.7rem;color:var(--t3);margin-top:4px;letter-spacing:.5px}
-.cd-progress{height:4px;border-radius:2px;background:var(--bd);margin-top:1.25rem;overflow:hidden}
-.cd-bar{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--red),var(--orange));transition:width 1s linear}
+/* AUTH OVERLAY */
 .ov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s}
 .ov.show{opacity:1;pointer-events:all}
 .modal{background:var(--bg3);border:1px solid var(--bd2);border-radius:24px;padding:2.5rem;max-width:390px;width:100%;text-align:center;transform:translateY(16px);transition:transform .3s;position:relative}
@@ -490,21 +480,6 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
 <div class="page" id="tab-apply">
   <div class="wrap">
     <div class="sh"><div class="se">انضم لعالم الرول بلاي</div><div class="st">طلب التفعيل</div></div>
-
-    <!-- rejected lock -->
-    <div id="apply-locked" style="display:none">
-      <div class="lock-box">
-        <div class="lock-ico">🔒</div>
-        <h2>تم رفض طلبك</h2>
-        <p>يمكنك إعادة التقديم بعد انتهاء فترة الانتظار — راجع القوانين جيداً قبل التقديم مجدداً.</p>
-        <div class="countdown-wrap">
-          <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">ساعة</div></div>
-          <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">دقيقة</div></div>
-          <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">ثانية</div></div>
-        </div>
-        <div class="cd-progress"><div class="cd-bar" id="cd-bar" style="width:100%"></div></div>
-      </div>
-    </div>
 
     <!-- login wall -->
     <div id="apply-wall" style="display:none">
@@ -769,7 +744,40 @@ function submitApplication(){
     db.ref('cfw_stats/pending').transaction(v=>(v||0)+1);
   }catch(e){console.warn(e)}
 
-  // الويبهوك يُرسله البوت مع أزرار القبول والرفض
+  // إرسال الويبهوك مع wait=true لنحصل على message_id
+  const av=user.avatar?`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`:'https://cdn.discordapp.com/embed/avatars/0.png';
+  const embed = {
+    title:'🎮 طلب تفعيل جديد — MONACO CFW',
+    color:0xf0c040,
+    thumbnail:{url:av},
+    fields:[
+      {name:'👤 المتقدم',       value:`${user.global_name||user.username}\n\`${user.id}\``, inline:true},
+      {name:'📛 الاسم في الرول',value:q1,                                                  inline:true},
+      {name:'🎂 العمر',          value:q2,                                                  inline:true},
+      {name:'🧠 Metagaming',     value:q3.slice(0,200)+(q3.length>200?'...':''),            inline:false},
+      {name:'💀 New Life Rule',  value:q4.slice(0,200)+(q4.length>200?'...':''),            inline:false},
+      {name:'🎭 الشخصية',        value:q5.slice(0,200)+(q5.length>200?'...':''),            inline:false},
+      {name:'📜 القوانين',        value:q7.slice(0,200)+(q7.length>200?'...':''),            inline:false},
+      {name:'🔖 الحالة',         value:'🟡 قيد المراجعة',                                    inline:true},
+    ],
+    footer:{text:'MONACO CFW • نظام التفعيل'},
+    timestamp:new Date().toISOString()
+  };
+
+  // wait=true يرجع الرسالة مع id
+  fetch(CFW_WEBHOOK + '?wait=true', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({embeds:[embed]})
+  })
+  .then(r=>r.json())
+  .then(msg=>{
+    // حفظ message_id في Firebase
+    if(msg?.id && appKey){
+      db.ref('cfw_applications/'+appKey).update({messageId: msg.id});
+    }
+  })
+  .catch(e=>console.warn(e));
 
   document.getElementById('apply-form').style.display='none';
   document.getElementById('apply-sent').style.display='block';
