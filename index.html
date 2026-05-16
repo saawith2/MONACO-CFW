@@ -618,7 +618,7 @@ footer{border-top:1px solid var(--bd);background:var(--bg2);padding:2.5rem clamp
 <div class="toast" id="toast"></div>
 
 <script>
-const CFW_WEBHOOK = '--------';
+const CFW_WEBHOOK = 'https://discord.com/api/webhooks/1501734837256585247/WNlJzK-_Xmsuz9tutXHEXGXN1FCrV3dfkArfDFuENoW66rpg8NDqcIGrkVNhLRu0wE6K';
 let user=null, theme='dark';
 
 /* ═══ FIREBASE TRACK ═══ */
@@ -808,9 +808,7 @@ function loadAdmin(){
       const answers=Object.entries(app.answers||{}).map(([q,a])=>`
         <div class="qa-ans-row"><span class="qa-ans-q">${q}</span><span class="qa-ans-a">${a}</span></div>`).join('');
       const actions=app.status==='pending'?`
-        <button class="adm-btn accept" onclick="reviewApp('${key}','accepted','${app.messageId||''}','${app.globalName||app.username||''}')">✅ قبول</button>
-        <button class="adm-btn reject" onclick="reviewApp('${key}','rejected','${app.messageId||''}','${app.globalName||app.username||''}')">❌ رفض</button>`:'';
-      return `<div class="aitem">
+            return `<div class="aitem">
         <div class="aitem-top">${avEl}<div><div class="aname">${nm}</div><div class="auid">${app.userId||'—'}</div><div class="atime">${time}</div></div>${badge}</div>
         <div class="qa-answers">${answers}</div>
         <div class="adm-actions">${actions}</div>
