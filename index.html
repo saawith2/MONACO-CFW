@@ -808,7 +808,9 @@ function loadAdmin(){
       const answers=Object.entries(app.answers||{}).map(([q,a])=>`
         <div class="qa-ans-row"><span class="qa-ans-q">${q}</span><span class="qa-ans-a">${a}</span></div>`).join('');
       const actions=app.status==='pending'?`
-            return `<div class="aitem">
+        <button class="adm-btn accept" onclick="reviewApp('${key}','accepted','${app.messageId||''}','${app.globalName||app.username||''}')">✅ قبول</button>
+        <button class="adm-btn reject" onclick="reviewApp('${key}','rejected','${app.messageId||''}','${app.globalName||app.username||''}')">❌ رفض</button>`:'';
+      return `<div class="aitem">
         <div class="aitem-top">${avEl}<div><div class="aname">${nm}</div><div class="auid">${app.userId||'—'}</div><div class="atime">${time}</div></div>${badge}</div>
         <div class="qa-answers">${answers}</div>
         <div class="adm-actions">${actions}</div>
